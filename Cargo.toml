@@ -1,0 +1,15 @@
+[package]
+name = "arikedb"
+version = "0.0.1"
+edition = "2021"
+build = "build.rs"
+
+[dependencies]
+tonic = "*"
+prost = "*"
+tokio = {version = "*", features = ["full"]}
+tokio-stream = "*"
+
+[build-dependencies]
+tonic-build = "0.11.0"
+prost-build = "0.12.6"
