@@ -6,7 +6,7 @@ homepage = "https://arikedb.com"
 repository = "https://github.com/alejandroalfonsoyero/arikedb-rust"
 authors = ["Alejandro <alejandroalfonso1994@gmail.com>"]
 readme = "README.md"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 build = "build.rs"
 

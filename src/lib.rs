@@ -149,10 +149,10 @@ impl ArikedbClient {
 
     pub async fn create_collections(
         &mut self,
-        name: &Vec<&str>
+        names: &Vec<&str>
     ) -> Result<(), Box<dyn std::error::Error>> {
 
-        let collections = name.iter().map(|n| CollectionMeta { name: n.to_string() }).collect();
+        let collections = names.iter().map(|n| CollectionMeta { name: n.to_string() }).collect();
         let mut request = Request::new(CreateCollectionsRequest { collections });
         self._insert_meta(&mut request);
 
