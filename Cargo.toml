@@ -3,10 +3,10 @@ name = "arikedb"
 description = "Welcome to the ArikeDB Rust library! This library provides an interface to interact with the Arike Database, an advanced real-time database solution. This documentation will guide you through the process of setting up and using the library effectively."
 license = "MIT"
 homepage = "https://arikedb.com"
-repository = "https://github.com/alejandroalfonsoyero/arikedb-rust"
+repository = "https://github.com/Arikedb/arikedb-rust"
 authors = ["Alejandro <alejandroalfonso1994@gmail.com>"]
 readme = "README.md"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 build = "build.rs"
 
