@@ -29,7 +29,10 @@ async fn main() {
     let mut client = ArikedbClient::connect(
         "127.0.0.1", // host
         6923,        // port
-        false        // use_ssl
+        false,       // use_ssl
+        None,        // ca_cert
+        None,        // client_cert
+        None         // client_key
     ).await.unwrap();
 }
 ```
@@ -48,6 +51,9 @@ async fn main() {
         "127.0.0.1", // host
         6923,        // port
         false        // use_ssl
+        None,        // ca_cert
+        None,        // client_cert
+        None         // client_key
     ).await.unwrap();
 
     client.authenticate("username", "password").await.unwrap();
