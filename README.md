@@ -12,6 +12,7 @@ To use the ArikeDB Rust library, add it to your `Cargo.toml`:
 ```toml
 [dependencies]
 arikedb = "*"
+tokio = {version = "*", features = ["full"]}
 ```
 
 ### Connecting to ArikeDB
