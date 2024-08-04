@@ -1,5 +1,6 @@
 use tonic::{Request, Response};
-use tonic::transport::Channel;
+use std::fs;
+use tonic::transport::{Channel, ClientTlsConfig};
 use arikedbpbuff::arikedb_rpc_client::ArikedbRpcClient;
 use arikedbpbuff::{
     StatusCode,
@@ -111,22 +112,43 @@ impl ArikedbClient {
     pub async fn connect(
         host: &str,
         port: u16,
-        use_ssl: bool
+        use_ssl_tls: bool,
+        ca_path: Option<&str>,
+        cert_path: Option<&str>,
+        key_path: Option<&str>
     ) -> Result<Self, Box<dyn std::error::Error>> {
 
-        let url = if use_ssl { format!("https://{}:{}", host, port) } else { format!("http://{}:{}", host, port) };
+        let url = if use_ssl_tls { format!("https://{}:{}", host, port) } else { format!("http://{}:{}", host, port) };
 
-        match Channel::from_shared(url) {
-            Ok(endpoint) => {
-                match endpoint.connect().await {
-                    Ok(channel) => {
-                        Ok(Self { client: ArikedbRpcClient::new(channel), token: None })
-                    },
-                    Err(err) => return Err(err.into()),
-                }
+        let channel = if use_ssl_tls {
+            let mut tls_config = ClientTlsConfig::new();
+
+            if let Some(ca_path) = ca_path {
+                let ca_cert = fs::read(ca_path)?;
+                tls_config = tls_config.ca_certificate(tonic::transport::Certificate::from_pem(ca_cert));
             }
-            Err(err) => Err(err.into()),
-        }
+
+            if let Some(cert_path) = cert_path {
+                let client_cert = fs::read(cert_path)?;
+                tls_config = tls_config.identity(tonic::transport::Identity::from_pem(client_cert, fs::read(key_path.unwrap())?));
+            }
+
+            Channel::from_shared(url)?
+                .tls_config(tls_config)?
+                .connect()
+                .await?
+        } else {
+            Channel::from_shared(url)?
+                .connect()
+                .await?
+        };
+
+        let client = ArikedbRpcClient::new(channel);
+
+        Ok(ArikedbClient {
+            client,
+            token: None,
+        })
 
     }
 
